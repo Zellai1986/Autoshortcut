@@ -1,7 +1,7 @@
 {
-  "name": "LandLockbox",
-  "short_name": "LandLockbox",
-  "description": "One-tap shortcut for LandLockbox",
+  "name": "LandFolder",
+  "short_name": "Land Related",
+  "description": "One-tap shortcut for Land Shared Folder",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
