@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandLockbox</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      margin: 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- If already installed and launched from phone home screen, automatically redirect -->
+  <script>
+    const targetFolder = "https://drive.google.com/drive/folders/1Fvrx6DSVutMCqzWz3jVGiWDqQzb3egNO";
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isStandalone) {
+      // Opened from the home screen icon directly!
+      window.location.replace(targetFolder);
+    }
+  </script>
+
+  <!-- Big Simple UI for Sister -->
+  <div class="max-w-md w-full bg-slate-800/90 border border-slate-700 rounded-3xl p-6 shadow-2xl flex flex-col items-center">
+    
+    <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl mb-4 shadow-lg" style="background-color: #4f46e5;">
+      📁
+    </div>
+
+    <h1 class="text-2xl font-black text-white mb-2">LandLockbox</h1>
+    <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+      Tap the big button below to put this folder directly onto your phone's home screen!
+    </p>
+
+    <!-- The 1-Tap Trigger Button -->
+    <button 
+      id="installBtn" 
+      class="w-full py-5 px-6 rounded-2xl text-lg font-bold text-white shadow-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-transform flex items-center justify-center gap-3 cursor-pointer"
+    >
+      <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+      </svg>
+      <span>Add to Home Screen</span>
+    </button>
+
+    <!-- Alternative Fallback if Chrome already prompt handled -->
+    <a 
+      id="directLink" 
+      href="https://drive.google.com/drive/folders/1Fvrx6DSVutMCqzWz3jVGiWDqQzb3egNO" 
+      class="mt-4 text-xs text-slate-400 underline hover:text-slate-200"
+    >
+      Or tap here to open the folder directly in Drive
+    </a>
+
+  </div>
+
+  <script>
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+
+    // Register simple Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    // Capture Chrome's install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.classList.remove('opacity-60');
+    });
+
+    // Handle button click
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === 'accepted') {
+          // Send her directly to folder after she taps yes!
+          setTimeout(() => {
+            window.location.href = targetFolder;
+          }, 600);
+        }
+      } else {
+        // If Android doesn't offer prompt yet (or already installed), take her to the folder
+        window.location.href = targetFolder;
+      }
+    });
+  </script>
+</body>
+</html>

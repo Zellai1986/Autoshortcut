@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-Tap Home Screen Launcher Maker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+  <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-30 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white">One-Tap Shortcut Creator</h1>
+          <p class="text-xs text-slate-400">PWA Builder for Google Drive Folders & Family Shortcuts</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
+          Ready to Deploy
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Column: Inputs & Hosting Steps -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Step 1: Configuration Form -->
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md">1</span>
+            <h2 class="text-lg font-bold text-white">Customize Sister's Shortcut</h2>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                Google Drive Shared Folder Link
+              </label>
+              <div class="relative">
+                <input 
+                  type="url" 
+                  id="driveLinkInput" 
+                  placeholder="https://drive.google.com/drive/folders/1aBcDeFgHiJk..." 
+                  value="https://drive.google.com/drive/folders/example"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                >
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Paste the shared link of your Drive folder here. Anyone with this link must have permission to view it.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  Folder / App Name
+                </label>
+                <input 
+                  type="text" 
+                  id="appNameInput" 
+                  placeholder="e.g. Family Photos" 
+                  value="Family Photos"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                >
+                <p class="text-xs text-slate-400 mt-1">This will be the title shown under the icon on her phone.</p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                  App Accent Color
+                </label>
+                <div class="flex items-center gap-3">
+                  <input 
+                    type="color" 
+                    id="themeColorInput" 
+                    value="#4f46e5"
+                    class="w-12 h-11 bg-slate-900 border border-slate-700 rounded-xl cursor-pointer p-1"
+                  >
+                  <span id="themeColorHex" class="text-xs font-mono text-slate-400">#4f46e5 (Indigo)</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Chrome theme bar & button color.</p>
+              </div>
+            </div>
+
+            <!-- Pre-made Icon Choices -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+                Choose Shortcut Icon
+              </label>
+              <div class="grid grid-cols-4 gap-3">
+                <button type="button" onclick="selectIcon('folder')" id="icon-folder" class="icon-selector ring-2 ring-indigo-500 bg-slate-900 hover:bg-slate-700 p-3 rounded-xl flex flex-col items-center gap-1 transition">
+                  <span class="text-2xl">📁</span>
+                  <span class="text-[11px] font-medium text-slate-300">Folder</span>
+                </button>
+                <button type="button" onclick="selectIcon('photos')" id="icon-photos" class="icon-selector bg-slate-900 hover:bg-slate-700 p-3 rounded-xl flex flex-col items-center gap-1 transition">
+                  <span class="text-2xl">📸</span>
+                  <span class="text-[11px] font-medium text-slate-300">Photos</span>
+                </button>
+                <button type="button" onclick="selectIcon('docs')" id="icon-docs" class="icon-selector bg-slate-900 hover:bg-slate-700 p-3 rounded-xl flex flex-col items-center gap-1 transition">
+                  <span class="text-2xl">📄</span>
+                  <span class="text-[11px] font-medium text-slate-300">Docs</span>
+                </button>
+                <button type="button" onclick="selectIcon('heart')" id="icon-heart" class="icon-selector bg-slate-900 hover:bg-slate-700 p-3 rounded-xl flex flex-col items-center gap-1 transition">
+                  <span class="text-2xl">❤️</span>
+                  <span class="text-[11px] font-medium text-slate-300">Family</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md">2</span>
+              <h2 class="text-lg font-bold text-white">Generated App Files (3)</h2>
+            </div>
+            <button 
+              id="downloadAllBtn"
+              onclick="downloadAllFiles()" 
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition shadow-md shadow-indigo-600/30 active:scale-95"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download Files
+            </button>
+          </div>
+
+          <!-- File selector tabs -->
+          <div class="flex border-b border-slate-700 mb-4 gap-1">
+            <button onclick="switchTab('html')" id="tab-html" class="px-4 py-2 text-xs font-semibold text-indigo-400 border-b-2 border-indigo-500 transition">
+              index.html
+            </button>
+            <button onclick="switchTab('manifest')" id="tab-manifest" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition">
+              manifest.json
+            </button>
+            <button onclick="switchTab('sw')" id="tab-sw" class="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition">
+              sw.js
+            </button>
+          </div>
+
+          <!-- Code Box -->
+          <div class="relative">
+            <pre class="bg-slate-950 text-slate-300 font-mono text-xs p-4 rounded-xl overflow-x-auto max-h-72 border border-slate-800"><code id="codeViewer"></code></pre>
+            <button 
+              onclick="copyCurrentCode()" 
+              class="absolute top-3 right-3 bg-slate-800/90 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-slate-700 flex items-center gap-1.5 shadow"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="copyBtnText">Copy Code</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-md">3</span>
+            <h2 class="text-lg font-bold text-white">How To Put This Online For Free (3 Mins)</h2>
+          </div>
+
+          <div class="space-y-4 text-sm text-slate-300">
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Google Drive shortcuts need to be hosted on an HTTPS website so Android allows them to be saved. You can host this 100% free with <strong class="text-indigo-400">GitHub Pages</strong> or <strong class="text-emerald-400">TinyHost</strong> without knowing any backend code!
+            </p>
+
+            <div class="space-y-3">
+              <div class="p-3.5 bg-slate-900/80 rounded-xl border border-slate-800 flex gap-3">
+                <div class="w-6 h-6 rounded-full bg-slate-800 text-indigo-400 flex items-center justify-center text-xs font-bold shrink-0">A</div>
+                <div>
+                  <h4 class="font-semibold text-white text-xs">Method 1: GitHub Pages (Recommended)</h4>
+                  <ol class="list-decimal list-inside text-xs text-slate-400 space-y-1 mt-1">
+                    <li>Go to <a href="https://github.com/new" target="_blank" class="text-indigo-400 underline hover:text-indigo-300">github.com/new</a> and create a public repository (e.g. <code class="bg-slate-800 px-1 py-0.5 rounded text-amber-300">family-drive</code>).</li>
+                    <li>Click <strong>"uploading an existing file"</strong> and drag in the 3 downloaded files: <code class="text-slate-200">index.html</code>, <code class="text-slate-200">manifest.json</code>, and <code class="text-slate-200">sw.js</code>.</li>
+                    <li>Go to repo <strong>Settings &gt; Pages</strong> &gt; Set Branch to <strong>"main"</strong> and click <strong>Save</strong>.</li>
+                    <li>GitHub gives you a link like <code class="text-emerald-400">https://yourusername.github.io/family-drive/</code>. Text that link to your sister!</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="p-3.5 bg-slate-900/80 rounded-xl border border-slate-800 flex gap-3">
+                <div class="w-6 h-6 rounded-full bg-slate-800 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">B</div>
+                <div>
+                  <h4 class="font-semibold text-white text-xs">Method 2: Drop &amp; Host (Even Easier, No Account)</h4>
+                  <p class="text-xs text-slate-400 mt-1">
+                    Put the 3 files in a ZIP file and upload to <a href="https://tiiny.host" target="_blank" class="text-emerald-400 underline hover:text-emerald-300">tiiny.host</a> or <a href="https://app.netlify.com/drop" target="_blank" class="text-emerald-400 underline hover:text-emerald-300">Netlify Drop</a>. They give you a live HTTPS link instantly with zero coding.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
+        
+        <div class="flex items-center justify-between px-2">
+          <h3 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+            <span>📱</span> Sister's Phone Screen Preview
+          </h3>
+          <span class="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400">Interactive Simulation</span>
+        </div>
+
+        <!-- Phone Frame Wrapper -->
+        <div class="relative mx-auto w-full max-w-[340px] aspect-[9/18.5] bg-black rounded-[48px] p-3 shadow-2xl ring-1 ring-slate-700 shadow-indigo-950/40 flex flex-col justify-between overflow-hidden">
+          
+          <!-- Notch / Camera & Speaker Bar -->
+          <div class="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full flex items-center justify-center z-40 border border-slate-800">
+            <div class="w-3 h-3 rounded-full bg-slate-900 mr-2"></div>
+            <div class="w-8 h-1.5 rounded-full bg-slate-800"></div>
+          </div>
+
+          <!-- Inside Phone Screen -->
+          <div class="relative w-full h-full bg-slate-950 rounded-[38px] overflow-hidden flex flex-col justify-between pt-8 pb-4 text-center select-none border border-slate-900">
+            
+            <!-- Android Chrome URL bar mockup -->
+            <div class="mx-3 mt-1 bg-slate-900 border border-slate-800 rounded-full px-3 py-1.5 flex items-center justify-between text-[11px] text-slate-400">
+              <div class="flex items-center gap-1.5 truncate">
+                <svg class="w-3 h-3 text-emerald-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                </svg>
+                <span class="truncate">your-app.github.io</span>
+              </div>
+              <span class="text-slate-500 font-bold">:</span>
+            </div>
+
+            <!-- Page Content Sister Sees -->
+            <div class="p-4 flex flex-col items-center justify-center flex-1 my-auto">
+              
+              <!-- Giant App Icon -->
+              <div id="simIconBox" class="w-24 h-24 rounded-3xl bg-indigo-600 shadow-xl shadow-indigo-600/30 flex items-center justify-center mb-4 transition-transform duration-300 hover:scale-105">
+                <span id="simIconEmoji" class="text-5xl">📁</span>
+              </div>
+
+              <h2 id="simAppName" class="text-xl font-black text-white tracking-tight mb-1">
+                Family Photos
+              </h2>
+              <p class="text-xs text-slate-400 mb-6 px-4">
+                Tap the big green button below to save this shortcut directly to your home screen!
+              </p>
+
+              <!-- Giant Install Button for the sister -->
+              <button 
+                id="simInstallButton" 
+                onclick="simulateSisterClick()" 
+                class="w-full py-4 px-4 rounded-2xl font-bold text-white shadow-xl transition-all duration-200 transform active:scale-95 flex items-center justify-center gap-2 text-base bg-emerald-500 hover:bg-emerald-400"
+              >
+                <svg class="w-5 h-5 text-white animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Add to Home Screen</span>
+              </button>
+
+              <!-- Subtitle reassurance -->
+              <p class="text-[11px] text-slate-500 mt-3">
+                No passwords or app store needed
+              </p>
+            </div>
+
+            <!-- Sister's Native Android Confirmation Modal (Mockup) -->
+            <div id="simNativePrompt" class="hidden absolute inset-x-3 bottom-5 bg-slate-900 border border-slate-700 rounded-2xl p-4 text-left shadow-2xl z-50 animate-in fade-in slide-in-from-bottom duration-200">
+              <div class="flex items-center gap-3 mb-3">
+                <div id="promptIcon" class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-xl shrink-0">📁</div>
+                <div>
+                  <h4 class="text-xs font-bold text-white">Add to Home screen?</h4>
+                  <p id="promptAppName" class="text-[11px] text-slate-400">Family Photos</p>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-300 mb-4 leading-normal">
+                This will place a one-tap shortcut icon on your phone's main screen.
+              </p>
+              <div class="flex justify-end gap-2 text-xs font-semibold">
+                <button onclick="closeSimPrompt(false)" class="px-3 py-1.5 text-slate-400 hover:text-slate-200">Cancel</button>
+                <button onclick="closeSimPrompt(true)" class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500">Install</button>
+              </div>
+            </div>
+
+            <!-- Home screen icon placed notification -->
+            <div id="simSuccessNotification" class="hidden absolute inset-x-3 bottom-5 bg-emerald-950/90 border border-emerald-500/40 rounded-2xl p-3 text-center shadow-2xl z-50">
+              <span class="text-emerald-400 font-bold text-xs">✨ Added to Home Screen!</span>
+              <p class="text-[10px] text-emerald-300 mt-1">Now redirecting sister to Google Drive folder...</p>
+            </div>
+
+            <!-- Footer note inside phone -->
+            <div class="text-[10px] text-slate-600 pt-2 border-t border-slate-900">
+              Auto-forwarding launcher
+            </div>
+
+          </div>
+
+          <!-- Bottom Home Bar -->
+          <div class="w-28 h-1 bg-slate-700 rounded-full mx-auto my-1"></div>
+        </div>
+
+        <div class="text-center">
+          <p class="text-xs text-slate-400">
+            Click the <span class="text-emerald-400 font-semibold">"Add to Home Screen"</span> button above to test her exact one-tap experience!
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-indigo-600 text-white text-xs px-4 py-3 rounded-xl shadow-2xl border border-indigo-400/30 transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-2">
+    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <span id="toastMsg">Code copied to clipboard!</span>
+  </div>
+
+  <script>
+    // State
+    const state = {
+      driveUrl: "https://drive.google.com/drive/folders/example",
+      appName: "Family Photos",
+      themeColor: "#4f46e5",
+      selectedIcon: "📁",
+      activeTab: "html"
+    };
+
+    const iconMap = {
+      folder: "📁",
+      photos: "📸",
+      docs: "📄",
+      heart: "❤️"
+    };
+
+    // DOM Elements
+    const driveLinkInput = document.getElementById("driveLinkInput");
+    const appNameInput = document.getElementById("appNameInput");
+    const themeColorInput = document.getElementById("themeColorInput");
+    const themeColorHex = document.getElementById("themeColorHex");
+    const simAppName = document.getElementById("simAppName");
+    const simIconEmoji = document.getElementById("simIconEmoji");
+    const simIconBox = document.getElementById("simIconBox");
+    const codeViewer = document.getElementById("codeViewer");
+    const simNativePrompt = document.getElementById("simNativePrompt");
+    const simSuccessNotification = document.getElementById("simSuccessNotification");
+    const promptIcon = document.getElementById("promptIcon");
+    const promptAppName = document.getElementById("promptAppName");
+
+    // Initialize
+    function init() {
+      driveLinkInput.addEventListener("input", (e) => {
+        state.driveUrl = e.target.value.trim() || "https://drive.google.com";
+        renderCode();
+      });
+
+      appNameInput.addEventListener("input", (e) => {
+        state.appName = e.target.value.trim() || "Drive Folder";
+        simAppName.textContent = state.appName;
+        promptAppName.textContent = state.appName;
+        renderCode();
+      });
+
+      themeColorInput.addEventListener("input", (e) => {
+        state.themeColor = e.target.value;
+        themeColorHex.textContent = state.themeColor;
+        simIconBox.style.backgroundColor = state.themeColor;
+        renderCode();
+      });
+
+      renderCode();
+    }
+
+    // Select Icon
+    function selectIcon(type) {
+      state.selectedIcon = iconMap[type];
+      document.querySelectorAll(".icon-selector").forEach(el => {
+        el.classList.remove("ring-2", "ring-indigo-500");
+      });
+      document.getElementById("icon-" + type).classList.add("ring-2", "ring-indigo-500");
+      simIconEmoji.textContent = state.selectedIcon;
+      promptIcon.textContent = state.selectedIcon;
+      renderCode();
+    }
+
+    // Switch File Code Tabs
+    function switchTab(tab) {
+      state.activeTab = tab;
+      ["html", "manifest", "sw"].forEach(t => {
+        const btn = document.getElementById("tab-" + t);
+        if (t === tab) {
+          btn.className = "px-4 py-2 text-xs font-semibold text-indigo-400 border-b-2 border-indigo-500 transition";
+        } else {
+          btn.className = "px-4 py-2 text-xs font-semibold text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition";
+        }
+      });
+      renderCode();
+    }
+
+    function generateHTML() {
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(state.appName)}</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="${state.themeColor}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${state.selectedIcon}</text></svg>">
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      margin: 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- If already installed and launched from phone home screen, automatically redirect -->
+  <script>
+    const targetFolder = "${escapeJs(state.driveUrl)}";
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isStandalone) {
+      // Opened from the home screen icon directly!
+      window.location.replace(targetFolder);
+    }
+  <\/script>
+
+  <!-- Big Simple UI for Sister -->
+  <div class="max-w-md w-full bg-slate-800/90 border border-slate-700 rounded-3xl p-6 shadow-2xl flex flex-col items-center">
+    
+    <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-5xl mb-4 shadow-lg" style="background-color: ${state.themeColor};">
+      ${state.selectedIcon}
+    </div>
+
+    <h1 class="text-2xl font-black text-white mb-2">${escapeHtml(state.appName)}</h1>
+    <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+      Tap the big button below to put this folder directly onto your phone's home screen!
+    </p>
+
+    <!-- The 1-Tap Trigger Button -->
+    <button 
+      id="installBtn" 
+      class="w-full py-5 px-6 rounded-2xl text-lg font-bold text-white shadow-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-transform flex items-center justify-center gap-3 cursor-pointer"
+    >
+      <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+      </svg>
+      <span>Add to Home Screen</span>
+    </button>
+
+    <!-- Alternative Fallback if Chrome already prompt handled -->
+    <a 
+      id="directLink" 
+      href="${escapeHtml(state.driveUrl)}" 
+      class="mt-4 text-xs text-slate-400 underline hover:text-slate-200"
+    >
+      Or tap here to open the folder directly in Drive
+    </a>
+
+  </div>
+
+  <script>
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+
+    // Register simple Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    // Capture Chrome's install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.classList.remove('opacity-60');
+    });
+
+    // Handle button click
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === 'accepted') {
+          // Send her directly to folder after she taps yes!
+          setTimeout(() => {
+            window.location.href = targetFolder;
+          }, 600);
+        }
+      } else {
+        // If Android doesn't offer prompt yet (or already installed), take her to the folder
+        window.location.href = targetFolder;
+      }
+    });
+  <\/script>
+</body>
+</html>`;
+    }
+
+    function generateManifest() {
+      // Generate clean SVG base64 icon so browser has 192 and 512 images ready
+      const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="${state.themeColor}"/><text x="50%" y="55%" font-size="60" dominant-baseline="middle" text-anchor="middle">${state.selectedIcon}</text></svg>`;
+      const iconDataUri = `data:image/svg+xml;utf8,${encodeURIComponent(svgIcon)}`;
+
+      return JSON.stringify({
+        "name": state.appName,
+        "short_name": state.appName,
+        "description": `One-tap shortcut for ${state.appName}`,
+        "start_url": "./index.html",
+        "display": "standalone",
+        "background_color": "#0f172a",
+        "theme_color": state.themeColor,
+        "icons": [
+          {
+            "src": iconDataUri,
+            "sizes": "192x192 512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+          }
+        ]
+      }, null, 2);
+    }
+
+    function generateSW() {
+      return `// Minimal offline caching service worker required for PWA installation
+const CACHE_NAME = 'shortcut-v1';
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json'
+];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((res) => res || fetch(e.request))
+  );
+});`;
+    }
+
+    // Helper sanitizers
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[m]));
+    }
+
+    function escapeJs(str) {
+      return str.replace(/"/g, '\\"').replace(/'/g, "\\'");
+    }
+
+    // Render code in pre block
+    function renderCode() {
+      let code = "";
+      if (state.activeTab === "html") code = generateHTML();
+      else if (state.activeTab === "manifest") code = generateManifest();
+      else if (state.activeTab === "sw") code = generateSW();
+      
+      codeViewer.textContent = code;
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      toastMsg.textContent = msg;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 3000);
+    }
+
+    function copyCurrentCode() {
+      const code = codeViewer.textContent;
+      const textarea = document.createElement("textarea");
+      textarea.value = code;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showToast(`Copied ${state.activeTab === 'html' ? 'index.html' : state.activeTab === 'manifest' ? 'manifest.json' : 'sw.js'} to clipboard!`);
+      } catch (err) {
+        showToast("Error copying code");
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Instant file download without external libraries
+    function triggerDownload(fileName, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadAllFiles() {
+      triggerDownload("index.html", generateHTML(), "text/html");
+      setTimeout(() => triggerDownload("manifest.json", generateManifest(), "application/json"), 250);
+      setTimeout(() => triggerDownload("sw.js", generateSW(), "application/javascript"), 500);
+      showToast("Downloading all 3 files (index.html, manifest.json, sw.js)!");
+    }
+
+    // Phone simulator interactions
+    function simulateSisterClick() {
+      simNativePrompt.classList.remove("hidden");
+    }
+
+    function closeSimPrompt(accepted) {
+      simNativePrompt.classList.add("hidden");
+      if (accepted) {
+        simSuccessNotification.classList.remove("hidden");
+        setTimeout(() => {
+          simSuccessNotification.classList.add("hidden");
+        }, 3200);
+      }
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
